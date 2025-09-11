@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+psycopg[binary]
+psycopg_pool
+pydantic
+pandas
+pyarrow
+duckdb
+numpy
+playwright
+pandera
+python-multipart
