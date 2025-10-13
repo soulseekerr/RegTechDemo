@@ -233,27 +233,6 @@ def portal_upload(file: UploadFile = File(...)):
     Path("evidence/uploads", file.filename).write_bytes(file.file.read())
     return "<h3>Submission Success</h3> Ack: 12345"
 
-# def duckdb_aggregate_from_parquet(parquet_path: str):
-#     con = duckdb.connect()
-#     return con.execute("""
-#       SELECT book, SUM(notional1) total_notional, COUNT(*) spk_trades
-#       FROM read_parquet(?)
-#       GROUP BY book ORDER BY total_notional DESC
-#     """, [parquet_path]).df()
-
-# --- pipeline trigger ---
-# @app.post("/v1/evidence_run")
-# def run(file: UploadFile = File(...)):
-#     Path("evidence").mkdir(exist_ok=True)
-#     parquet_path = Path("evidence")/file.filename
-#     agg = duckdb_aggregate_from_parquet(parquet_path).to_dict("records")
-#     res = rpa_submit(str(parquet_path))
-#     # append a tiny summary into the manifest
-#     man = Path(res["manifest"])
-#     j = json.loads(man.read_text()); j["summary"] = {"rows": len(df), "agg": agg}
-#     man.write_text(json.dumps(j, indent=2))
-#     return {"ok": True, "parquet": parquet_path, "agg": agg, **res}
-
 def _parse_pg_for_duckdb_attach(db_url: str) -> str:
     # Build a DuckDB POSTGRES attach string: dbname=... user=... password=... host=... port=...
     u = urlparse(db_url)

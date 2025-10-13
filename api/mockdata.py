@@ -7,7 +7,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import traceback
 
-DATA_DIR = Path("./data")
+DATA_DIR = Path("./.data")
 RUNS_DIR = DATA_DIR / "runs"
 RUNS_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -16,6 +16,8 @@ LOADS_DIR.mkdir(parents=True, exist_ok=True)
 
 EVIDENCE_BASE = DATA_DIR / "evidence_runs"
 EVIDENCE_BASE.mkdir(parents=True, exist_ok=True)
+
+
 
 class MakeTradesRequest(BaseModel):
     rows: int = 10_000  # default
@@ -27,7 +29,7 @@ def _write_manifest(path: Path, obj: dict):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(obj, indent=2))
 
-def _generate_trades_chunk(n_rows: int, start_id: int, rng: np.random.Generator) -> pd.DataFrame:
+def _generate_trades_chunk(n_rows: int, rng: np.random.Generator) -> pd.DataFrame:
     """Generates a chunk of n trades as a DataFrame."""
     books = np.array(["XVA","CVA","FVA","MM","EQD","FXD"])
     prods = np.array(["IRS","CDS","FXO","EQO","XCCY"])
