@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "name": "trades_then_cpties",
+  "defaults": {
+    "max_retries": 1,
+    "retry_sleep_s": 0.5
+  },
+  "context": {
+    "cob_dt": "2025-10-17",
+    "trades_rows": 2000000,
+    "trades_chunk": 250000,
+    "cpty_rows": 100000,
+    "cpty_chunk": 10000
+  },
+  "tasks": [
+    {
+      "id": "maketrades",
+      "type": "MakeTradesTask",
+      "params": {},
+      "max_retries": 2,
+      "retry_sleep_s": 0.5
+    },
+    {
+      "id": "makecpties",
+      "type": "MakeCptiesTask",
+      "params": {}
+    }
+  ],
+  "edges": [
+    ["maketrades", "makecpties"]
+  ]
+}
