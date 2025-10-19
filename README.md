@@ -53,6 +53,9 @@ docker compose logs -f api
 docker compose down -v && docker compose up -d --build
 
 
+docker compose down streamlit & docker compose up streamlit -d --build
+
+
 ## Create Parquet file for trades
 curl -X POST http://localhost:8000/make_trades \
   -H 'content-type: application/json' \
@@ -80,3 +83,7 @@ curl -s http://localhost:8000/loads/<load_id> | jq
 
 ## Kernel to use virtual env
 python -m ipykernel install --user --name .venv --display-name "Python (.venv)"
+
+
+pytest -v --maxfail=1 --disable-warnings
+pytest --cov=orchestrator --cov-report=term-missing

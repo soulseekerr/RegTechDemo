@@ -2,11 +2,11 @@ import numpy as np
 import pandas as pd
 import datetime
 
-from .databuilder import DataBuilder
+from api.databuilder import DataBuilder
 
 class TradeBuilder(DataBuilder):
     """ Generate synthetic trade data and writes it to Parquet. """
-    def __init__(self):
+    def __init__(self, cob_dt: datetime, run_id: str):
         self.books = np.array(["XVA","CVA","FVA","MM","EQD","FXD"])
         self.prods = np.array(["IRS","CDS","FXO","EQO","XCCY"])
         self.ccys  = np.array(["USD","EUR","GBP","JPY","AUD"])
@@ -43,4 +43,4 @@ class TradeBuilder(DataBuilder):
                 "is_equity": rng.choice([0,1], n_rows, p=[0.85,0.15]).astype("int8")
             })
     
-        super().__init__("trades", generator)
+        super().__init__(cob_dt, run_id, "trades", generator)

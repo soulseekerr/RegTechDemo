@@ -2,11 +2,11 @@ import numpy as np
 import pandas as pd
 import datetime
 
-from .databuilder import DataBuilder
+from api.databuilder import DataBuilder
 
 class CptyBuilder(DataBuilder):
     """ Generate synthetic counterparty data and writes it to Parquet. """
-    def __init__(self):
+    def __init__(self, cob_dt: datetime, run_id: str):
         self.countries = np.array(["FR","UK","NL","DE","JP","US","AU","CN","IN","BR"])
         self.cva_methods = np.array(["Financial","Corporate","Corporate_Exception", "Sovereign"])
         self.external_ratings = np.array(["AAA","AA","A","BBB","BB","B","CCC","CC","C","D"])
@@ -24,4 +24,4 @@ class CptyBuilder(DataBuilder):
                 "grr": rng.choice(self.grrs, n_rows)
             })
     
-        super().__init__("counterparties", generator)
+        super().__init__(cob_dt, run_id, "cpties", generator)

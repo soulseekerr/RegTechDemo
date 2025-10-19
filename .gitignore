@@ -15,3 +15,8 @@ __pycache__/
 
 # Data
 .data/**
+data/**
+*.parquet
+cpties-manifest.json
+trades-manifest.json
+tools/.data/**
