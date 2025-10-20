@@ -85,7 +85,7 @@ class DataBuilder:
 
             if writer:
                 writer.close()
-            
+
             file_size_bytes = self.parquet.stat().st_size
             file_size_mb = round(file_size_bytes / (1024*1024), 2)
         
