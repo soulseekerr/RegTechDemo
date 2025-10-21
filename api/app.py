@@ -1,4 +1,5 @@
 import os
+import sys
 import io
 import uuid
 import json
@@ -23,9 +24,14 @@ from fastapi import FastAPI, Query, HTTPException, Depends, BackgroundTasks, Req
 from fastapi import UploadFile, File
 from fastapi.responses import HTMLResponse
 
-from tradebuilder import TradeBuilder
-from cptybuilder import CptyBuilder
-from config import Config
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    print("Adding project root to sys.path:", ROOT)
+    sys.path.insert(0, str(ROOT))
+
+from api.tradebuilder import TradeBuilder
+from api.cptybuilder import CptyBuilder
+from api.config import Config
 
 class MakeTradesRequest(BaseModel):
     cob_dt: datetime = datetime.now() - BDay(1)  # default to last business day
