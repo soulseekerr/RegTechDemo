@@ -1,37 +1,25 @@
-CREATE TABLE IF NOT EXISTS samples (
-  id SERIAL PRIMARY KEY,
-  value DOUBLE PRECISION NOT NULL
-);
+-- init.sql
+-- Initialize the database schema
 
--- seed a few rows:
-INSERT INTO samples(value)
-SELECT generate_series(1, 10)
-ON CONFLICT DO NOTHING;
+-- Stop execution on first error
+\set ON_ERROR_STOP on
 
-CREATE TABLE IF NOT EXISTS spk_trades (
-  cob             TIMESTAMP WITHOUT TIME ZONE PRIMARY KEY,
-  trade_id        BIGINT PRIMARY KEY,
-  fo_trade_id     BIGINT NOT NULL PRIMARY KEY,
-  book            TEXT NOT NULL,
-  product         TEXT NOT NULL,
-  product_type    TEXT,
-  notional1       DOUBLE PRECISION,
-  currency1       TEXT,
-  notional2       DOUBLE PRECISION,
-  currency2       TEXT,
-  counterparty    TEXT NOT NULL,
-  traded_at       TIMESTAMP WITHOUT TIME ZONE,
-  matured_at      TIMESTAMP WITHOUT TIME ZONE,
-  strike          DOUBLE PRECISION,
-  rate            DOUBLE PRECISION,
-  quantity        INTEGER,
-  strategy_type   TEXT,
-  strategy        TEXT,
-  is_fx               SMALLINT,
-  is_commodity        SMALLINT,
-  is_equity           SMALLINT,
-  is_interest_rate    SMALLINT,
-  is_credit           SMALLINT
-);
-CREATE INDEX IF NOT EXISTS idx_trades_book ON spk_trades(book);
-CREATE INDEX IF NOT EXISTS idx_trades_product ON spk_trades(product);
+BEGIN;
+
+\echo "Initializing database schema..."
+
+-- Create tables
+\i /docker-entrypoint-initdb.d/tables/create_samples.sql
+\i /docker-entrypoint-initdb.d/tables/create_cpties.sql
+\i /docker-entrypoint-initdb.d/tables/create_trades.sql
+\i /docker-entrypoint-initdb.d/tables/create_users.sql
+
+-- Seed initial data
+\echo "Seeding initial data..."
+
+\i /docker-entrypoint-initdb.d/seeds/seed_samples.sql
+\i /docker-entrypoint-initdb.d/seeds/seed_users.sql
+
+COMMIT;
+
+\echo "Database initialization complete."

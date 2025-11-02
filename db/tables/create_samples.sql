@@ -1,0 +1,10 @@
+-- create_samples.sql
+
+BEGIN;
+
+CREATE TABLE IF NOT EXISTS samples (
+  id SERIAL PRIMARY KEY,
+  value DOUBLE PRECISION NOT NULL
+);
+
+COMMIT;

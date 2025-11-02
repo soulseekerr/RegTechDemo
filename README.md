@@ -55,6 +55,7 @@ docker compose down -v && docker compose up -d --build
 
 docker compose down streamlit & docker compose up streamlit -d --build
 
+docker compose down --volumes --remove-orphans & docker compose up -d --build
 
 ## Create Parquet file for trades
 curl -X POST http://localhost:8000/make_trades \
@@ -87,3 +88,8 @@ python -m ipykernel install --user --name .venv --display-name "Python (.venv)"
 
 pytest -v --maxfail=1 --disable-warnings
 pytest --cov=orchestrator --cov-report=term-missing
+
+docker compose logs db | less
+docker compose logs db | grep ERROR
+docker compose exec db psql -U myuser -d mydb -f /docker-entrypoint-initdb.d/tables/create_trades.sql
+psql -h localhost -U myuser -d mydb -f db/tables/create_trades.sql
